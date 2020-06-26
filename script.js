@@ -11,7 +11,7 @@ var RESULTS_SHEET_NAME = 'results';
 var LOGS_SHEET_NAME = 'logs';
 
 //EMAIL
-var SENT_EMAIL = true;
+var SEND_EMAIL = true;
 var RECIPIENTS = ['panos@atnet.gr'];
 var SUBJECT = "Google Ads // Ekdromi // Paused ads";
 
@@ -49,8 +49,8 @@ function main() {
             if (BAD_RESPONSE_CODES.indexOf(responseCode) != -1) {
                 var action = 'PAUSE';
 
-                //if (!DRY_RUN)
-                //  Ad.pause();
+                if (!DRY_RUN)
+                    Ad.pause();
             } else {
                 var action = '-';
             }
@@ -77,16 +77,13 @@ function main() {
         return el.action != '-';
     });
 
-    if (SENT_EMAIL) {
-        try {
-            MailApp.sendEmail({
-                to: RECIPIENTS.join(","),
-                subject: SUBJECT,
-                htmlBody: '<pre>' + JSON.stringify(affectedEntries, null, 2) + '</pre>'
-            });
-        } catch (e) {
-            log(e.message, true);
-        }
+    if (SEND_EMAIL) {
+        log("Remaining email quota: " + MailApp.getRemainingDailyQuota(), true);
+        MailApp.sendEmail({
+            to: RECIPIENTS.join(","),
+            subject: SUBJECT,
+            htmlBody: '<pre>' + JSON.stringify(affectedEntries, null, 2) + '</pre>'
+        });
     }
 
 
