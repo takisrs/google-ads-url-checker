@@ -12,20 +12,20 @@ var LOGS_SHEET_NAME = 'logs';
 
 //EMAIL
 var SEND_EMAIL = true;
-var RECIPIENTS = ['panos@atnet.gr'];
-var SUBJECT = "Google Ads // Ekdromi // Paused ads";
+var RECIPIENTS = ['takispadaz@gmail.com'];
+var SUBJECT = "Google Ads // Paused ads";
 
 //RUNTIME VARS
 var DRY_RUN = true;
 var TASK_ID = '#PAUSE-' + new Date().toISOString().slice(0, 19).replace('T', ' ');
 var LABEL_TO_APPLY = 'AUTO PAUSED AD';
-
 var RESULTS = [];
+
 
 function main() {
     log('Start Execution', true);
-	
-	checkLabel();
+
+    checkLabel();
 
     var AdsIterator = AdWordsApp.ads()
         .withCondition("CreativeFinalUrls CONTAINS '/frontend/deals/view/'") //get only deal urls
@@ -52,10 +52,10 @@ function main() {
             if (BAD_RESPONSE_CODES.indexOf(responseCode) != -1) {
                 var action = 'PAUSE';
 
-                if (!DRY_RUN){
-					Ad.applyLabel(LABEL_TO_APPLY);
-					Ad.pause();
-				}
+                if (!DRY_RUN) {
+                    Ad.applyLabel(LABEL_TO_APPLY);
+                    Ad.pause();
+                }
             } else {
                 var action = '-';
             }
@@ -82,7 +82,7 @@ function main() {
         return el.action != '-';
     });
 
-    if (SEND_EMAIL) {
+    if (SEND_EMAIL && affectedEntries.length > 0) {
         log("Remaining email quota: " + MailApp.getRemainingDailyQuota(), true);
         MailApp.sendEmail({
             to: RECIPIENTS.join(","),
@@ -116,6 +116,7 @@ function saveResultsToSpreadsheet(results) {
 
 }
 
+
 function log(log, toSpreadsheet) {
     Logger.log(log);
 
@@ -129,14 +130,13 @@ function log(log, toSpreadsheet) {
 }
 
 
-function checkLabel(){
-	var labelIterator = AdsApp.labels().withCondition("Name CONTAINS '"+LABEL_TO_APPLY+"'").get();
-    if (labelIterator.hasNext()){
-		// Label Exists
-		log(e.message, true);
-	} else {
+function checkLabel() {
+    var labelIterator = AdsApp.labels().withCondition("Name CONTAINS '" + LABEL_TO_APPLY + "'").get();
+    if (labelIterator.hasNext()) {
+        log("Label '" + LABEL_TO_APPLY + "' exists", true);
+    } else {
         AdsApp.createLabel(LABEL_TO_APPLY);
-		log("Label '"+LABEL_TO_APPLY+"' has been created", true);
+        log("Label '" + LABEL_TO_APPLY + "' has been created", true);
     }
 }
 
