@@ -17,12 +17,15 @@ var SUBJECT = "Google Ads // Ekdromi // Paused ads";
 
 //RUNTIME VARS
 var DRY_RUN = true;
-var TASK_ID = '#EK-' + new Date().toISOString().slice(0, 19).replace('T', ' ');
-var RESULTS = [];
+var TASK_ID = '#PAUSE-' + new Date().toISOString().slice(0, 19).replace('T', ' ');
+var LABEL_TO_APPLY = 'AUTO PAUSED AD';
 
+var RESULTS = [];
 
 function main() {
     log('Start Execution', true);
+	
+	checkLabel();
 
     var AdsIterator = AdWordsApp.ads()
         .withCondition("CreativeFinalUrls CONTAINS '/frontend/deals/view/'") //get only deal urls
@@ -49,8 +52,10 @@ function main() {
             if (BAD_RESPONSE_CODES.indexOf(responseCode) != -1) {
                 var action = 'PAUSE';
 
-                if (!DRY_RUN)
-                    Ad.pause();
+                if (!DRY_RUN){
+					Ad.applyLabel(LABEL_TO_APPLY);
+					Ad.pause();
+				}
             } else {
                 var action = '-';
             }
@@ -121,6 +126,18 @@ function log(log, toSpreadsheet) {
         sheet.appendRow([TASK_ID, date, log]);
     }
 
+}
+
+
+function checkLabel(){
+	var labelIterator = AdsApp.labels().withCondition("Name CONTAINS '"+LABEL_TO_APPLY+"'").get();
+    if (labelIterator.hasNext()){
+		// Label Exists
+		log(e.message, true);
+	} else {
+        AdsApp.createLabel(LABEL_TO_APPLY);
+		log("Label '"+LABEL_TO_APPLY+"' has been created", true);
+    }
 }
 
 
