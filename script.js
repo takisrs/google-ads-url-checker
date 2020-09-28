@@ -97,7 +97,7 @@ function main() {
 }
 
 
-function saveResultsToSpreadsheet(results) {
+function saveResultsToSpreadsheet(results) { //TODO: check spreadsheet size
     var spreadsheet = SpreadsheetApp.openByUrl(SPREADSHEET_URL);
     var sheet = spreadsheet.getSheetByName(RESULTS_SHEET_NAME);
     sheet.appendRow(['-']);
