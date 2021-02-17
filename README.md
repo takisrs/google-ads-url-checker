@@ -97,7 +97,7 @@ var LABEL_TO_APPLY = 'AUTO PAUSED AD';
 ```
 
 
-If you want to restrict the ads that will get checked on each script execution, you could modify appropriately the below code part:
+If you want to restrict the ads that will get checked on each script execution, you could modify appropriately the code below:
 ```javascript
 var AdsIterator = AdWordsApp.ads()
     .withCondition("CreativeFinalUrls CONTAINS '"+AD_URL_FILTER+"'")
