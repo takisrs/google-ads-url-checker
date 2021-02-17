@@ -1,16 +1,16 @@
 # Google Ads script
 
-A google ads script, that checks ads' destination url and pause the ad if a "bad" response (ex 404) detected.
+A google ads script, that checks ads' destination url and pause the ad if a "bad" response (ex 404) is detected.
 
 ## Configuration
-You should consider configuring the below variables before activate the script:   
+You should consider configuring the variables below, before activate the script:   
 
 ```javascript
 /************************/
 /***** URL CHECKING *****/
 /************************/
 /**
- * The response codes of the target url that will cause to ad pausing
+ * The response codes of the target url that will cause the ad pausing
  */
 var BAD_RESPONSE_CODES = [404, 301];
 
@@ -25,12 +25,12 @@ var NUM_OF_TRIES = 4;
 var SLEEP_TIME_FOR_RETRY = 250;
 
 /**
- * If the script has to follow any redirect of the target url if it exists
+ * If the script has to follow any redirect of the target url as long as it exists
  */
 var FOLLOW_REDIRECTS = false;
 
 /**
- * Filter the ads to be check, by providing a url' part to be checked against ad's target url
+ * Filter the ads that will be checked, by giving the part of the url that will be compared to the ad's url
  */
 var AD_URL_FILTER = "/frontend/deals/view/";
 
@@ -62,7 +62,7 @@ var LOGS_SHEET_NAME = 'logs';
 /********* EMAIL ********/
 /************************/
 /**
- * If an email will be send in case the script perform any action
+ * Whether to send an email, if the script performs an action
  */
 var SEND_EMAIL = true;
 
@@ -81,7 +81,7 @@ var SUBJECT = "Google Ads // Paused ads";
 /***** RUNTIME VARS *****/
 /************************/
 /**
- * If the dry run of the script is enabled. If that's the case, the script will not submit any action.
+ * If the dry run of the script is enabled or not. If it is enabled, the script will not submit any action.
  */
 var DRY_RUN = true;
 
@@ -91,7 +91,7 @@ var DRY_RUN = true;
 var TASK_ID = '#PAUSE-' + new Date().toISOString().slice(0, 19).replace('T', ' ');
 
 /**
- * The label to apply on each ad that get paused
+ * The label to apply on each ad that gets paused
  */
 var LABEL_TO_APPLY = 'AUTO PAUSED AD';
 ```
